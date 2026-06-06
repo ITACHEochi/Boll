@@ -1,8 +1,7 @@
-name: Build APK
+name: Build Kivy APK
 
 on:
-  push:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -12,13 +11,25 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Install dependencies
+    - name: Install system deps
       run: |
         sudo apt update
-        sudo apt install -y python3-pip
-        pip install buildozer cython
+        sudo apt install -y \
+        python3-pip \
+        git \
+        zip \
+        unzip \
+        openjdk-17-jdk
+
+    - name: Install buildozer
+      run: |
+        pip install --upgrade pip
+        pip install cython buildozer
+
+    - name: Init buildozer
+      run: |
+        buildozer init || true
 
     - name: Build APK
       run: |
-        buildozer init || true
-        buildozer -v android debug
+        buildozer android debug
