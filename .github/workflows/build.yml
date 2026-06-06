@@ -1,24 +1,19 @@
-name: Build APK
+name: Build Kivy APK
 
 on:
-  push:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
+    container:
+      image: kivy/buildozer:latest
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Install dependencies
-      run: |
-        sudo apt update
-        sudo apt install -y python3-pip
-        pip install buildozer cython
-
     - name: Build APK
       run: |
-        buildozer init || true
-        buildozer -v android debug
+        buildozer android debug
