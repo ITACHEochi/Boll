@@ -12,6 +12,4 @@ requirements = python3,kivy
 
 orientation = portrait
 
-[buildozer]
-
 android.permissions = INTERNET
